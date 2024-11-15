@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp2-cheap
+# provisioner: kubernetes.io/aws-ebs
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp2
+  fsType: ext4
+  encrypted: "false"
+reclaimPolicy: Delete
+volumeBindingMode: Immediate

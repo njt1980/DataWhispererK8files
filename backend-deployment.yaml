@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-be
+  template:
+    metadata:
+      labels:
+        app: fastapi-be
+    spec:
+      containers:
+        - name: fastapi-be
+          image: njt1980/backendfastapi:v2
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+          - containerPort: 8000
+          volumeMounts:
+          - name: sqlite-db-volume
+            mountPath: /data
+          env:
+          - name: 'OPENAI_API_KEY'
+            valueFrom:
+              secretKeyRef:
+                name: api-key-secret
+                key: OPENAI_API_KEY
+      volumes:
+        - name: sqlite-db-volume
+          persistentVolumeClaim:
+            claimName: sqlite-db-pvc
+

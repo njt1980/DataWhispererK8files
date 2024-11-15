@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: temp
+  labels:
+    name: temp-pod
+spec:
+  containers:
+  - name: temp-pod
+    image: busybox:latest
+    command: ["sleep","3600"]
+    volumeMounts:
+      - name: sqlite-db-volume
+        mountPath: /data
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+  volumes:
+  - name: sqlite-db-volume
+    persistentVolumeClaim:
+      claimName: sqlite-db-pvc
+
