@@ -1,0 +1,18 @@
+eksctl create cluster --name mycluster --region us-east-1 --nodes 1 --node-type t3.small --nodes-min 1 --nodes-max 2 --managed
+aws iam create-open-id-connect-provider --url https://oidc.eks.us-east-1.amazonaws.com/id/CBDFDD5515CEED720D4200FD2ABD2C4E --client-id-list sts.amazonaws.com --thumbprint-list "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+aws eks create-addon --cluster-name mycluster --addon-name aws-ebs-csi-driver --service-account-role-arn arn:aws:iam::266383988601:role/EKS_EBS_CSI_Driver_Role
+kubectl create secret generic api-key-secret --from-literal=OPENAI_API_KEY=<API key without quotes>
+if required:
+aws eks update-addon --cluster-name mycluster --addon-name aws-ebs-csi-driver --service-account-role-arn arn:aws:iam::266383988601:role/EKS_EBS_CSI_Driver_Role 
+If access needed to be updated:
+kubectl edit configmap aws-auth -n kube-system
+kubectl apply -f StorageClass.yaml
+kubectl apply -f PersistentVolumeClaim.yaml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f backend-service.yaml
+kubectl apply -k "github.com/kubernetes-sigs/gateway-api/config/crd/experimental?ref=v0.7.1"
+kubectl apply -f gateway.yaml
+kubectl apply -f httproute.yaml
+kubectl cp reservation_system.db fastapi-be-5b6cf4449f-mm27c:/data/reservation_system.dbc:\Users\nimel.thomas\reservation_system.db

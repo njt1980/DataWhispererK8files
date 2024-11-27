@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: app-route
+  namespace: default
+spec:
+  parentRefs:
+  - name: app-gateway
+  hostnames:
+  - "mypocapp.click"
+  rules:
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /api
+      backendRefs:
+      - name: fastapi-be-service
+        port: 80
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
+      - name: frontend-loadbalancer
+        port: 80

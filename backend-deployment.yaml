@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fastapi-be
-          image: njt1980/backendfastapi:v2
+          image: njt1980/backendfastapi:v5
           resources:
             limits:
               memory: "128Mi"
@@ -24,6 +24,7 @@ spec:
           volumeMounts:
           - name: sqlite-db-volume
             mountPath: /data
+            readOnly: false
           env:
           - name: 'OPENAI_API_KEY'
             valueFrom:

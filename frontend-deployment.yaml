@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: sveltekit
-        image: njt1980/frontendsveltekit
+        image: njt1980/frontendsveltekit:v5
         ports:
           - containerPort: 3000
         resources:
